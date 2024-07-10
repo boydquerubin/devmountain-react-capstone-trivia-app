@@ -1,0 +1,29 @@
+React Trivia App - RubyxQube
+
+MVP
+- user can interact with quiz
+- store high score for personal table on backend
+
+future MVP
+- external API not part, use it as a functionality
+- user can register
+- user can login
+
+DO LAST
+- user can create category
+- user can edit category
+- user can delete category
+
+notes:
+- high score counter
+- keep track whenever person starts quiz keep track of score, once finish, GET request axios check if person's high score is greater than the one in database
+if greater, PUT request to edit it, to UPDATE to change name and score, and replaces it
+- handle request
+- receive response from server
+- hard code questions first, get website going and change later
+- data model
+
+
+
+- store database
+- map into new cards, personal or whole site
