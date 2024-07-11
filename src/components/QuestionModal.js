@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import "../index.css"; // Import the CSS for the modal
 
 const QuestionModal = ({ question, isOpen, onClose }) => {
   const [timeLeft, setTimeLeft] = useState(30);
@@ -23,7 +25,7 @@ const QuestionModal = ({ question, isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal">
+    <div className="modal-overlay">
       <div className="modal-content">
         <h2>{question.text}</h2>
         <div className="options">
@@ -36,6 +38,15 @@ const QuestionModal = ({ question, isOpen, onClose }) => {
       </div>
     </div>
   );
+};
+
+QuestionModal.propTypes = {
+  question: PropTypes.shape({
+    text: PropTypes.string.isRequired,
+    options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  }),
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default QuestionModal;

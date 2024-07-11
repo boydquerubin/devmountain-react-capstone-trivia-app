@@ -78,7 +78,8 @@ const Home = () => {
       {fetchError && <p>{fetchError}</p>}
       {highScores.length > 0 && (
         <div className="highScore">
-          <div className="highScore-grid">
+          <h2>High Score</h2>
+          <div className="highScore-container">
             {highScores.map((newHighScore) => (
               <HighScoreCard key={newHighScore.id} highScore={newHighScore} />
             ))}

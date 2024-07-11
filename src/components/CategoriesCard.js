@@ -2,8 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const CategoriesCard = ({ category, onSelect }) => {
+  // Sanitize the category name for the image file name
   const imageUrl = `/images/${category.name
     .toLowerCase()
+    .replace(/:/g, "")
     .replace(/ /g, "_")}.jpg`;
 
   return (
