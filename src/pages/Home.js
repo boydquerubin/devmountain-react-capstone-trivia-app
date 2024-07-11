@@ -3,6 +3,7 @@ import HighScoreCard from "../components/HighScoreCard";
 import Categories from "../components/Categories";
 import QuestionModal from "../components/QuestionModal";
 import supabase from "../config/supabaseClient"; // Import supabase client
+import "../index.css"; // Import the styles
 
 const Home = () => {
   const [fetchError, setFetchError] = useState(null);
@@ -50,7 +51,9 @@ const Home = () => {
     setSelectedCategory(category);
     // Fetch question for the selected category from the external API
     try {
-      const response = await fetch(`https://opentdb.com/api.php?amount=10`);
+      const response = await fetch(
+        `https://opentdb.com/api.php?amount=1&category=${category.id}&type=multiple`
+      );
       const data = await response.json();
       const question = data.results[0];
       setCurrentQuestion({

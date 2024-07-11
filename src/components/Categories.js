@@ -1,11 +1,11 @@
 import React from "react";
-import SportsCard from "./SportsCard";
+import CategoriesCard from "./CategoriesCard";
 
 const Categories = ({ categories, onSelectCategory }) => {
   return (
-    <div className="categories">
+    <div className="categories-grid">
       {categories.map((category) => (
-        <SportsCard
+        <CategoriesCard
           key={category.id}
           category={category}
           onSelect={onSelectCategory}
