@@ -1,12 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const CategoriesCard = ({ category, onSelect }) => {
-  // Sanitize the category name for the image file name
-  const imageUrl = `/images/${category.name
+const sanitizeCategoryName = (name) => {
+  return name
     .toLowerCase()
+    .replace(/ & /g, "_and_")
     .replace(/:/g, "")
-    .replace(/ /g, "_")}.jpg`;
+    .replace(/ /g, "_");
+};
+
+const CategoriesCard = ({ category, onSelect }) => {
+  const imageUrl = `/images/${sanitizeCategoryName(category.name)}.jpg`;
 
   return (
     <div className="categories-card" onClick={() => onSelect(category)}>

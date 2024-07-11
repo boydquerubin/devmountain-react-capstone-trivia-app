@@ -5,6 +5,18 @@ import QuestionModal from "../components/QuestionModal";
 import supabase from "../config/supabaseClient"; // Import supabase client
 import "../index.css"; // Import the styles
 
+const desiredCategories = [
+  "General Knowledge",
+  "Science & Nature",
+  "Sports",
+  "Entertainment: Books",
+  "Entertainment: Film",
+  "Entertainment: Music",
+  "Geography",
+  "History",
+  "Art",
+];
+
 const Home = () => {
   const [fetchError, setFetchError] = useState(null);
   const [highScores, setHighScores] = useState([]);
@@ -37,7 +49,11 @@ const Home = () => {
       try {
         const response = await fetch("https://opentdb.com/api_category.php");
         const data = await response.json();
-        setCategories(data.trivia_categories);
+        // Filter categories based on the desired list
+        const filteredCategories = data.trivia_categories.filter((category) =>
+          desiredCategories.includes(category.name)
+        );
+        setCategories(filteredCategories);
       } catch (error) {
         setFetchError("Could not fetch categories");
         console.log(error);
