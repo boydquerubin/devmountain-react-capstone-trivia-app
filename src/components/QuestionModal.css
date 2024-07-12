@@ -14,13 +14,30 @@
 
 .modal-content {
   background: #335145;
-  padding: 20px;
+  padding: 40px 20px 20px 20px; /* Add padding at the top for the exit button */
   border-radius: 8px;
   text-align: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   max-width: 500px;
   width: 100%;
   position: relative;
+}
+
+.exit-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #828c51;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.exit-button:hover {
+  background: #a6c36f;
 }
 
 .timer {
@@ -54,8 +71,13 @@
   background: #a6c36f;
 }
 
-button {
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
   margin-top: 20px;
+}
+
+.modal-buttons button {
   padding: 10px 20px;
   background: #1e352f;
   color: white;
@@ -65,6 +87,6 @@ button {
   font-size: 16px;
 }
 
-button:hover {
+.modal-buttons button:hover {
   background: #828c51;
 }
