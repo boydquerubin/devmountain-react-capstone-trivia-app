@@ -2,14 +2,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap");
 
 :root {
-  --primary: #12bca2;
-  --secondary: #6d15df;
+  --primary: #f46036;
+  --secondary: #5b85aa;
 }
 
 h1,
 h2,
 h3 {
   margin: 0;
+  color: #f2f2f2;
 }
 
 body {
@@ -19,7 +20,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f2f2f2;
+  background: var(--secondary);
   color: #333;
 }
 
@@ -115,7 +116,7 @@ nav h1 {
 }
 
 .modal-content {
-  background: white;
+  background: var(--secondary);
   padding: 20px;
   border-radius: 8px;
   text-align: center;
@@ -129,7 +130,7 @@ nav h1 {
   width: 100%;
   margin: 10px 0;
   padding: 10px;
-  background: #007bff;
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 4px;
@@ -138,7 +139,7 @@ nav h1 {
 }
 
 .options button:hover {
-  background: #0056b3;
+  background: #414770;
 }
 
 .timer {

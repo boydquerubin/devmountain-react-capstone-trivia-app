@@ -4,9 +4,12 @@ import "./HighScoreCard.css";
 
 const HighScoreCard = ({ highScore }) => {
   return (
-    <div className="high-score-card">
-      <h3>{highScore.title}</h3>
-      <div className="score">{highScore.score}</div>
+    <div className="high-score-title-box">
+      <h2>High Score</h2>
+      <div className="high-score-card">
+        <h3>{highScore.title}</h3>
+        <div className="score">{highScore.score}</div>
+      </div>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import "../index.css"; // Import the CSS for the modal
+import "./QuestionModal.css"; // Import the correct CSS file
 
 const QuestionModal = ({ question, isOpen, onClose }) => {
   const [timeLeft, setTimeLeft] = useState(30);
@@ -27,13 +27,13 @@ const QuestionModal = ({ question, isOpen, onClose }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
+        <div className="timer">Time left: {timeLeft}s</div>
         <h2>{question.text}</h2>
         <div className="options">
           {question.options.map((option, index) => (
             <button key={index}>{option}</button>
           ))}
         </div>
-        <div className="timer">Time left: {timeLeft}s</div>
         <button onClick={onClose}>Close</button>
       </div>
     </div>

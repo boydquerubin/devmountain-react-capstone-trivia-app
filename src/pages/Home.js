@@ -3,6 +3,7 @@ import HighScoreCard from "../components/HighScoreCard";
 import Categories from "../components/Categories";
 import QuestionModal from "../components/QuestionModal";
 import supabase from "../config/supabaseClient"; // Import supabase client
+import he from "he"; // Import he for decoding HTML entities
 import "../index.css"; // Import the styles
 
 const desiredCategories = [
@@ -73,10 +74,11 @@ const Home = () => {
       const data = await response.json();
       const question = data.results[0];
       setCurrentQuestion({
-        text: question.question,
-        options: [...question.incorrect_answers, question.correct_answer].sort(
-          () => Math.random() - 0.5
-        ),
+        text: he.decode(question.question), // Decode special characters
+        options: [
+          ...question.incorrect_answers.map((answer) => he.decode(answer)),
+          he.decode(question.correct_answer),
+        ].sort(() => Math.random() - 0.5),
       });
       setIsModalOpen(true);
     } catch (error) {
@@ -94,7 +96,6 @@ const Home = () => {
       {fetchError && <p>{fetchError}</p>}
       {highScores.length > 0 && (
         <div className="highScore">
-          <h2>High Score</h2>
           <div className="highScore-container">
             {highScores.map((newHighScore) => (
               <HighScoreCard key={newHighScore.id} highScore={newHighScore} />
