@@ -13,7 +13,7 @@
 }
 
 .modal-content {
-  background: #414770;
+  background: #335145;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
@@ -42,7 +42,7 @@
 
 .options button {
   padding: 10px;
-  background: #f46036;
+  background: #828c51;
   color: white;
   border: none;
   border-radius: 4px;
@@ -51,13 +51,13 @@
 }
 
 .options button:hover {
-  background: #5b85aa;
+  background: #a6c36f;
 }
 
 button {
   margin-top: 20px;
   padding: 10px 20px;
-  background: #171123;
+  background: #1e352f;
   color: white;
   border: none;
   border-radius: 4px;
@@ -66,5 +66,5 @@ button {
 }
 
 button:hover {
-  background: #5b85aa;
+  background: #828c51;
 }

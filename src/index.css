@@ -2,8 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap");
 
 :root {
-  --primary: #f46036;
-  --secondary: #5b85aa;
+  --primary: #1e352f;
+  --secondary: #335145;
 }
 
 h1,
@@ -84,6 +84,7 @@ nav h1 {
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s;
+  background-color: #1e352f;
 }
 
 .categories-card img {
