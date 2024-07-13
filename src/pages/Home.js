@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import HighScoreCard from "../components/HighScoreCard";
 import Categories from "../components/Categories";
 import QuestionModal from "../components/QuestionModal";
-import supabase from "../config/supabaseClient"; // Import supabase client
+import { supabase } from "../supabaseClient"; // Import supabase client
+import { storeScore } from "../services/scoreService"; // Import storeScore
 import he from "he"; // Import he for decoding HTML entities
 import "../index.css"; // Import the styles
 
@@ -25,6 +26,8 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [score, setScore] = useState(0);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     // Fetch high scores from the database
@@ -64,6 +67,21 @@ const Home = () => {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    // Fetch the currently logged-in user
+    const fetchUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      if (data) {
+        setUser(data.user);
+      }
+      if (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
   const handleSelectCategory = async (category) => {
     setSelectedCategory(category);
     // Fetch question for the selected category from the external API
@@ -87,7 +105,17 @@ const Home = () => {
     }
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModal = async (isCorrect) => {
+    if (isCorrect) {
+      setScore(score + 1);
+    }
+
+    if (user) {
+      await storeScore(user.id, score + 1);
+    } else {
+      alert("Please log in to save your score.");
+    }
+
     setIsModalOpen(false);
   };
 

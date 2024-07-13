@@ -23,7 +23,7 @@
 .high-score-card {
   width: 100%;
   padding: 20px;
-  background: linear-gradient(145deg, #372248, #414770);
+  background: linear-gradient(145deg, #f2f2f2, #beef9e);
   color: #fff;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
@@ -43,15 +43,15 @@
 .high-score-card h3 {
   font-size: 2em;
   margin: 0;
-  color: #f2f2f2;
+  color: #333;
 }
 
 .high-score-card .score {
-  background: #f46036;
-  color: #fff;
+  background: #f2f2f2;
+  color: #333;
   border-radius: 6px;
   padding: 10px 20px;
-  font-size: 1.5em;
+  font-size: 1.8em;
   margin-left: 20px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
