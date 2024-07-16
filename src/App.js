@@ -8,6 +8,8 @@ import Login from "./components/Login";
 import { supabase } from "./supabaseClient"; // Import supabase client
 import { logoutUser } from "./services/authService"; // Import logout function
 import logo from "./assets/logo.png"; // Import the logo
+import Footer from "./components/Footer"; // Import the Footer component
+import "./App.css"; // Import the CSS file for styling
 
 function App() {
   const [user, setUser] = useState(null);
@@ -44,14 +46,15 @@ function App() {
             />
             <h1>Rubyx Qube</h1>
           </Link>
-          <Link to="/">Home</Link>
           {user && <Link to="/create">Create New Category</Link>}
         </div>
         <div className="auth-buttons">
           {user ? (
             <>
               <span>Welcome, {user.email}</span>
-              <button onClick={handleLogout}>Logout</button>
+              <button onClick={handleLogout} className="logout-button">
+                Logout
+              </button>
             </>
           ) : (
             <>
@@ -74,6 +77,7 @@ function App() {
           element={user ? <Update /> : <Login onLogin={setUser} />}
         />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

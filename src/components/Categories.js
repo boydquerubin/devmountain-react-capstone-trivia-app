@@ -1,5 +1,6 @@
 import React from "react";
 import CategoriesCard from "./CategoriesCard";
+import "./Categories.css";
 
 const Categories = ({ categories, onSelectCategory }) => {
   return (

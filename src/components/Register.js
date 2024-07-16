@@ -1,21 +1,58 @@
 import React, { useState } from "react";
 import { registerUser } from "../services/authService";
+import "./Register.css"; // Import the CSS file for styling
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const user = await registerUser(email, password);
-    if (user) {
-      setMessage("Registration successful!");
-    } else {
-      setMessage(
-        "Registration failed. Please check the console for more details."
-      );
+    setLoading(true);
+    setMessage("");
+
+    if (!email || !password) {
+      setMessage("Please fill in all fields.");
+      setLoading(false);
+      return;
     }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setMessage("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 6) {
+      setMessage("Password should be at least 6 characters long.");
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const user = await registerUser(email, password);
+      if (user) {
+        setMessage("Registration successful!");
+      } else {
+        setMessage(
+          "Registration failed. Please check the console for more details."
+        );
+      }
+    } catch (error) {
+      console.error("Unexpected error during registration:", error);
+      setMessage("Registration failed. Please try again later.");
+    }
+
+    setLoading(false);
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
   return (
@@ -28,13 +65,20 @@ const Register = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Register</button>
+        <div className="password-container">
+          <input
+            type={passwordVisible ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <span onClick={togglePasswordVisibility} className="password-toggle">
+            <FontAwesomeIcon icon={passwordVisible ? faEyeSlash : faEye} />
+          </span>
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? "Registering..." : "Register"}
+        </button>
       </form>
       {message && <p className="form-message">{message}</p>}
     </div>
