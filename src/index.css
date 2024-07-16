@@ -2,15 +2,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap");
 
 :root {
-  --primary: #1e352f;
-  --secondary: #335145;
+  --primary: #0a1128;
+  --secondary: #034078;
 }
 
 h1,
 h2,
-h3 {
-  margin: 0;
-  color: #f2f2f2;
+h3,
+p {
+  margin-bottom: 2em;
+  color: #fefcfb;
 }
 
 body {
@@ -21,7 +22,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--secondary);
-  color: #333;
+  color: #0a1128;
 }
 
 code {
@@ -59,11 +60,11 @@ nav {
 .navbar-brand h1 {
   margin: 0;
   font-size: 1.5em;
-  color: #f2f2f2;
+  color: #fefcfb;
 }
 
 .nav-links a {
-  color: #f2f2f2;
+  color: #fefcfb;
   margin: 0 10px;
   text-decoration: none;
   padding: 5px 10px;
@@ -81,7 +82,7 @@ nav {
 }
 
 .auth-buttons a {
-  color: #f2f2f2;
+  color: #fefcfb;
   text-decoration: none;
   padding: 5px 10px;
   background: var(--secondary);
@@ -90,7 +91,7 @@ nav {
 }
 
 .auth-buttons a:hover {
-  background: #414770;
+  background: #1282a2;
 }
 
 .page {
@@ -132,7 +133,7 @@ nav {
   text-align: center;
   cursor: pointer;
   transition: transform 0.2s;
-  background-color: #1e352f;
+  background-color: #001f54;
 }
 
 .categories-card img {
@@ -188,7 +189,7 @@ nav {
 }
 
 .options button:hover {
-  background: #414770;
+  background: #1282a2;
 }
 
 .timer {
@@ -206,7 +207,7 @@ nav {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   max-width: 400px;
   margin: 20px auto;
-  color: #f2f2f2;
+  color: #fefcfb;
 }
 
 .form-container h2 {
@@ -232,7 +233,7 @@ nav {
 }
 
 .form-container button:hover {
-  background: #414770;
+  background: #1282a2;
 }
 
 .form-message {

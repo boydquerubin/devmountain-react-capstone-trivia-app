@@ -3,7 +3,7 @@ import HighScoreCard from "../components/HighScoreCard";
 import Categories from "../components/Categories";
 import QuestionModal from "../components/QuestionModal";
 import { supabase } from "../supabaseClient"; // Import supabase client
-import { storeScore } from "../services/scoreService"; // Import storeScore
+import { storeScore } from "../services/scoreService";
 import he from "he"; // Import he for decoding HTML entities
 import "../index.css"; // Import the styles
 
@@ -19,7 +19,7 @@ const desiredCategories = [
   "Art",
 ];
 
-const Home = () => {
+const Home = ({ user }) => {
   const [fetchError, setFetchError] = useState(null);
   const [highScores, setHighScores] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -27,7 +27,6 @@ const Home = () => {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [score, setScore] = useState(0);
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
     // Fetch high scores from the database
@@ -67,29 +66,31 @@ const Home = () => {
     fetchCategories();
   }, []);
 
-  useEffect(() => {
-    // Fetch the currently logged-in user
-    const fetchUser = async () => {
-      const { data, error } = await supabase.auth.getUser();
-      if (data) {
-        setUser(data.user);
-      }
-      if (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
-
-    fetchUser();
-  }, []);
-
   const handleSelectCategory = async (category) => {
     setSelectedCategory(category);
-    // Fetch question for the selected category from the external API
+    await fetchQuestion(category);
+  };
+
+  const fetchQuestion = async (category) => {
     try {
       const response = await fetch(
         `https://opentdb.com/api.php?amount=1&category=${category.id}&type=multiple`
       );
+
+      if (response.status === 429) {
+        setFetchError("Too many requests. Please wait a moment and try again.");
+        return;
+      }
+
       const data = await response.json();
+
+      if (data.results.length === 0) {
+        setFetchError(
+          "No questions available. Please try a different category."
+        );
+        return;
+      }
+
       const question = data.results[0];
       setCurrentQuestion({
         text: he.decode(question.question), // Decode special characters
@@ -117,6 +118,16 @@ const Home = () => {
     }
 
     setIsModalOpen(false);
+    setCurrentQuestion(null);
+  };
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const handleSkip = async () => {
+    setIsModalOpen(false);
+    setCurrentQuestion(null);
+    await delay(2000); // Add a 2-second delay between requests
+    await fetchQuestion(selectedCategory); // Fetch new question for the selected category
   };
 
   return (
@@ -139,6 +150,7 @@ const Home = () => {
         question={currentQuestion}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
+        onSkip={handleSkip}
       />
     </div>
   );
