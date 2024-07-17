@@ -3,16 +3,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
   padding: 10px 20px;
   background-color: #0a1128;
   color: white;
   bottom: 0;
   width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin-top: 40px;
 }
 
 .footer-content {
