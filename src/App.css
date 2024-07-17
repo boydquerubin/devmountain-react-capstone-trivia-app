@@ -59,3 +59,53 @@
 .logout-button:active {
   background-color: #1e352f; /* Background color when the button is clicked */
 }
+
+/* Add this to App.css or Home.css */
+.score-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.score-container h2 {
+  font-size: 2em;
+  margin: 0;
+  color: white;
+}
+
+.score-container h2:last-of-type {
+  margin-top: 10px;
+  color: #00c8ff;
+}
+
+.start-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px; /* Default height */
+  transition: height 0.3s;
+}
+
+.start-button-container.small {
+  height: 20px; /* Smaller height when the game starts */
+}
+
+.start-game-button {
+  padding: 15px 20px;
+  background-color: #0a1128;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 32px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.start-game-button:hover {
+  background-color: #1282a2;
+  transform: scale(1.05);
+}
+
+.start-game-button:disabled {
+  background-color: #007bff88;
+  cursor: not-allowed;
+}

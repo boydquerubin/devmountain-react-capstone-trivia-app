@@ -40,16 +40,6 @@
   background: #1282a2;
 }
 
-.timer {
-  background: white;
-  padding: 10px;
-  border-radius: 4px;
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  position: relative;
-}
-
 .options {
   display: grid;
   grid-template-columns: 1fr 1fr;

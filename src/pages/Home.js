@@ -27,6 +27,10 @@ const Home = ({ user }) => {
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [score, setScore] = useState(0);
+  const [timer, setTimer] = useState(60);
+  const [preGameTimer, setPreGameTimer] = useState(3);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [preGameStarted, setPreGameStarted] = useState(false);
 
   useEffect(() => {
     // Fetch high scores from the database
@@ -65,6 +69,34 @@ const Home = ({ user }) => {
 
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    if (preGameStarted && preGameTimer > 0) {
+      const countdown = setInterval(() => {
+        setPreGameTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+      return () => clearInterval(countdown);
+    } else if (preGameStarted && preGameTimer === 0) {
+      setPreGameStarted(false);
+      setGameStarted(true);
+    }
+  }, [preGameStarted, preGameTimer]);
+
+  useEffect(() => {
+    // Main timer logic
+    if (gameStarted && timer > 0) {
+      const countdown = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+      return () => clearInterval(countdown);
+    } else if (gameStarted && timer === 0) {
+      // Timer ran out, handle game over
+      alert("Time's up! Your final score is " + score);
+      handleGameOver();
+      setGameStarted(false);
+      setIsModalOpen(false);
+    }
+  }, [gameStarted, timer]);
 
   const handleSelectCategory = async (category) => {
     setSelectedCategory(category);
@@ -130,9 +162,63 @@ const Home = ({ user }) => {
     await fetchQuestion(selectedCategory); // Fetch new question for the selected category
   };
 
+  const handleStartGame = () => {
+    setScore(0);
+    setTimer(60);
+    setPreGameTimer(3);
+    setPreGameStarted(true);
+  };
+
+  const handleGameOver = async () => {
+    // Check if the user's score is greater than the current high score
+    const currentHighScore = highScores[0]; // Assuming the highest score is the first item in the array
+    if (score > currentHighScore.score) {
+      // Update the high score in the database
+      const { error } = await supabase
+        .from("highScore")
+        .update({ score, userId: user.id, username: user.email }) // Ensure you store the username
+        .eq("id", currentHighScore.id);
+
+      if (error) {
+        console.error("Error updating high score:", error);
+      } else {
+        // Refresh high scores
+        const { data, error: fetchError } = await supabase
+          .from("highScore")
+          .select();
+        if (!fetchError) {
+          setHighScores(data);
+        } else {
+          console.error("Error fetching high scores:", fetchError);
+        }
+      }
+    }
+  };
+
   return (
     <div className="page home">
       {fetchError && <p>{fetchError}</p>}
+      <div className="score-container">
+        <h2>Your Score: {score}</h2>
+        <h2>
+          {gameStarted
+            ? `Time Remaining: ${timer}s`
+            : preGameStarted
+            ? `Starting in: ${preGameTimer}`
+            : ""}
+        </h2>
+      </div>
+      <div
+        className={`start-button-container ${
+          gameStarted || preGameStarted ? "small" : ""
+        }`}
+      >
+        {!gameStarted && !preGameStarted && (
+          <button onClick={handleStartGame} className="start-game-button">
+            Start Game
+          </button>
+        )}
+      </div>
       {highScores.length > 0 && (
         <div className="highScore">
           <div className="highScore-container">

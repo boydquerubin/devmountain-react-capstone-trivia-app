@@ -7,7 +7,7 @@ const HighScoreCard = ({ highScore }) => {
     <div className="high-score-title-box">
       <h2>High Score</h2>
       <div className="high-score-card">
-        <h3>{highScore.title}</h3>
+        <h3>{highScore.username}</h3>
         <div className="score">{highScore.score}</div>
       </div>
     </div>
@@ -16,7 +16,7 @@ const HighScoreCard = ({ highScore }) => {
 
 HighScoreCard.propTypes = {
   highScore: PropTypes.shape({
-    title: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired, // Ensure the field name matches your database
     score: PropTypes.number.isRequired,
   }).isRequired,
 };
