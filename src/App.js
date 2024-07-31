@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Home from "./pages/Home";
-import Create from "./pages/Create";
-import Update from "./pages/Update";
+import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import { supabase } from "./supabaseClient"; // Import supabase client
@@ -46,7 +44,6 @@ function App() {
             />
             <h1>Rubyx Qube</h1>
           </Link>
-          {user && <Link to="/create">Create New Category</Link>}
         </div>
         <div className="auth-buttons">
           {user ? (
@@ -66,16 +63,8 @@ function App() {
       </nav>
       <Routes>
         <Route path="/" element={<Home user={user} />} />
-        <Route
-          path="/create"
-          element={user ? <Create /> : <Login onLogin={setUser} />}
-        />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login onLogin={setUser} />} />
-        <Route
-          path="/:id"
-          element={user ? <Update /> : <Login onLogin={setUser} />}
-        />
       </Routes>
       <Footer />
     </BrowserRouter>

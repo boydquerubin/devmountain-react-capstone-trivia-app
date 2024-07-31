@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import HighScoreCard from "../components/HighScoreCard";
-import Categories from "../components/Categories";
-import QuestionModal from "../components/QuestionModal";
+import HighScoreCard from "./HighScoreCard";
+import Categories from "./Categories";
+import QuestionModal from "./QuestionModal";
 import { supabase } from "../supabaseClient"; // Import supabase client
 import { storeScore } from "../services/scoreService";
 import he from "he"; // Import he for decoding HTML entities
