@@ -37,7 +37,9 @@ const Register = () => {
     try {
       const user = await registerUser(email, password);
       if (user) {
-        setMessage("Registration successful!");
+        setMessage(
+          "Registration pending! Please check your email to confirm your address and finalize your registration."
+        );
       } else {
         setMessage(
           "Registration failed. Please check the console for more details."
