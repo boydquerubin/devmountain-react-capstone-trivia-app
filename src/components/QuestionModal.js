@@ -10,8 +10,7 @@ const QuestionModal = ({ question, isOpen, onClose, onSkip }) => {
   };
 
   const handleSubmit = () => {
-    const isCorrect =
-      selectedOption === question.options[question.options.length - 1]; // Assuming the last option is always correct
+    const isCorrect = selectedOption === question.correctAnswer;
     handleClose(isCorrect);
   };
 
@@ -60,6 +59,7 @@ QuestionModal.propTypes = {
   question: PropTypes.shape({
     text: PropTypes.string.isRequired,
     options: PropTypes.arrayOf(PropTypes.string).isRequired,
+    correctAnswer: PropTypes.string.isRequired, // Add correctAnswer to the question shape
   }),
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,

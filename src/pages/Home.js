@@ -35,15 +35,14 @@ const Home = ({ user }) => {
   useEffect(() => {
     // Fetch high scores from the database
     const fetchHighScores = async () => {
-      const { data, error } = await supabase.from("highScore").select();
-
-      if (error) {
+      try {
+        const { data, error } = await supabase.from("highScore").select();
+        if (error) throw error;
+        setHighScores(data);
+      } catch (error) {
         setFetchError("Could not fetch the high scores");
         setHighScores([]);
-        console.log(error);
-      } else {
-        setHighScores(data);
-        setFetchError(null);
+        console.error(error);
       }
     };
 
@@ -55,15 +54,15 @@ const Home = ({ user }) => {
     const fetchCategories = async () => {
       try {
         const response = await fetch("https://opentdb.com/api_category.php");
+        if (!response.ok) throw new Error("Network response was not ok");
         const data = await response.json();
-        // Filter categories based on the desired list
         const filteredCategories = data.trivia_categories.filter((category) =>
           desiredCategories.includes(category.name)
         );
         setCategories(filteredCategories);
       } catch (error) {
         setFetchError("Could not fetch categories");
-        console.log(error);
+        console.error(error);
       }
     };
 
@@ -130,28 +129,42 @@ const Home = ({ user }) => {
           ...question.incorrect_answers.map((answer) => he.decode(answer)),
           he.decode(question.correct_answer),
         ].sort(() => Math.random() - 0.5),
+        correctAnswer: he.decode(question.correct_answer), // Add correctAnswer field
       });
       setIsModalOpen(true);
     } catch (error) {
       setFetchError("Could not fetch the question");
-      console.log(error);
+      console.error(error);
     }
   };
 
   const handleCloseModal = async (isCorrect) => {
+    console.log("Modal closed. Correct answer:", isCorrect);
     if (isCorrect) {
-      setScore(score + 1);
-    }
-
-    if (user) {
-      await storeScore(user.id, score + 1);
-    } else {
-      alert("Please log in to save your score.");
+      setScore((prevScore) => {
+        const newScore = prevScore + 1;
+        console.log("Score updated:", newScore); // Log the updated score
+        return newScore;
+      });
     }
 
     setIsModalOpen(false);
     setCurrentQuestion(null);
   };
+
+  useEffect(() => {
+    if (user && score > 0) {
+      console.log("Storing score for user:", user.id, score);
+      const storeUserScore = async () => {
+        try {
+          await storeScore(user.id, score);
+        } catch (error) {
+          console.error("Error storing score:", error);
+        }
+      };
+      storeUserScore();
+    }
+  }, [score, user]);
 
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -170,27 +183,25 @@ const Home = ({ user }) => {
   };
 
   const handleGameOver = async () => {
-    // Check if the user's score is greater than the current high score
     const currentHighScore = highScores[0]; // Assuming the highest score is the first item in the array
-    if (score > currentHighScore.score) {
-      // Update the high score in the database
-      const { error } = await supabase
-        .from("highScore")
-        .update({ score, userId: user.id, username: user.email }) // Ensure you store the username
-        .eq("id", currentHighScore.id);
-
-      if (error) {
-        console.error("Error updating high score:", error);
-      } else {
-        // Refresh high scores
-        const { data, error: fetchError } = await supabase
+    if (score > currentHighScore?.score) {
+      try {
+        const { error } = await supabase
           .from("highScore")
-          .select();
-        if (!fetchError) {
-          setHighScores(data);
+          .update({ score, userId: user.id, username: user.email }) // Ensure you store the username
+          .eq("id", currentHighScore.id);
+
+        if (error) {
+          throw error;
         } else {
-          console.error("Error fetching high scores:", fetchError);
+          const { data, error: fetchError } = await supabase
+            .from("highScore")
+            .select();
+          if (fetchError) throw fetchError;
+          setHighScores(data);
         }
+      } catch (error) {
+        console.error("Error updating high score:", error);
       }
     }
   };
@@ -235,7 +246,7 @@ const Home = ({ user }) => {
       <QuestionModal
         question={currentQuestion}
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        onClose={(isCorrect) => handleCloseModal(isCorrect)}
         onSkip={handleSkip}
       />
     </div>
