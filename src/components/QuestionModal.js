@@ -4,6 +4,7 @@ import "./QuestionModal.css"; // Import the correct CSS file
 
 const QuestionModal = ({ question, isOpen, onClose, onSkip }) => {
   const [selectedOption, setSelectedOption] = useState(null);
+  const [feedbackMessage, setFeedbackMessage] = useState("");
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -11,16 +12,23 @@ const QuestionModal = ({ question, isOpen, onClose, onSkip }) => {
 
   const handleSubmit = () => {
     const isCorrect = selectedOption === question.correctAnswer;
-    handleClose(isCorrect);
+    if (isCorrect) {
+      setFeedbackMessage("Correct!");
+    } else {
+      setFeedbackMessage("Incorrect, go again!");
+    }
+    setTimeout(() => handleClose(isCorrect), 1000); // Show message for 1 second before closing
   };
 
   const handleClose = (isCorrect) => {
     setSelectedOption(null); // Reset selected option
+    setFeedbackMessage(""); // Reset feedback message
     onClose(isCorrect); // Pass the result to the parent component
   };
 
   const handleSkip = () => {
     setSelectedOption(null); // Reset selected option
+    setFeedbackMessage(""); // Reset feedback message
     onSkip(); // Skip to the next question
   };
 
@@ -50,6 +58,15 @@ const QuestionModal = ({ question, isOpen, onClose, onSkip }) => {
           </button>
           <button onClick={handleSkip}>Skip Question</button>
         </div>
+        {feedbackMessage && (
+          <p
+            className={`feedback-message ${
+              feedbackMessage === "Correct!" ? "correct" : "incorrect"
+            }`}
+          >
+            {feedbackMessage}
+          </p>
+        )}
       </div>
     </div>
   );

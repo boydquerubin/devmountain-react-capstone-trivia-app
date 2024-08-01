@@ -110,6 +110,7 @@ const Home = ({ user }) => {
 
       if (response.status === 429) {
         setFetchError("Too many requests. Please wait a moment and try again.");
+        setTimeout(() => setFetchError(null), 4000); // Clear the error after 3 seconds
         return;
       }
 
