@@ -32,6 +32,30 @@ const Home = ({ user }) => {
   const [gameStarted, setGameStarted] = useState(false);
   const [preGameStarted, setPreGameStarted] = useState(false);
 
+  const handleGameOver = async () => {
+    const currentHighScore = highScores[0]; // Assuming the highest score is the first item in the array
+    if (score > currentHighScore?.score) {
+      try {
+        const { error } = await supabase
+          .from("highScore")
+          .update({ score, userId: user.id, username: user.email }) // Ensure you store the username
+          .eq("id", currentHighScore.id);
+
+        if (error) {
+          throw error;
+        } else {
+          const { data, error: fetchError } = await supabase
+            .from("highScore")
+            .select();
+          if (fetchError) throw fetchError;
+          setHighScores(data);
+        }
+      } catch (error) {
+        console.error("Error updating high score:", error);
+      }
+    }
+  };
+
   useEffect(() => {
     // Fetch high scores from the database
     const fetchHighScores = async () => {
@@ -181,30 +205,6 @@ const Home = ({ user }) => {
     setTimer(60);
     setPreGameTimer(3);
     setPreGameStarted(true);
-  };
-
-  const handleGameOver = async () => {
-    const currentHighScore = highScores[0]; // Assuming the highest score is the first item in the array
-    if (score > currentHighScore?.score) {
-      try {
-        const { error } = await supabase
-          .from("highScore")
-          .update({ score, userId: user.id, username: user.email }) // Ensure you store the username
-          .eq("id", currentHighScore.id);
-
-        if (error) {
-          throw error;
-        } else {
-          const { data, error: fetchError } = await supabase
-            .from("highScore")
-            .select();
-          if (fetchError) throw fetchError;
-          setHighScores(data);
-        }
-      } catch (error) {
-        console.error("Error updating high score:", error);
-      }
-    }
   };
 
   return (
