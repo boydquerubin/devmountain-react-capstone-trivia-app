@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import HighScoreCard from "./HighScoreCard";
 import Categories from "./Categories";
 import QuestionModal from "./QuestionModal";
@@ -32,7 +32,7 @@ const Home = ({ user }) => {
   const [gameStarted, setGameStarted] = useState(false);
   const [preGameStarted, setPreGameStarted] = useState(false);
 
-  const handleGameOver = async () => {
+  const handleGameOver = useCallback(async () => {
     const currentHighScore = highScores[0]; // Assuming the highest score is the first item in the array
     if (score > currentHighScore?.score) {
       try {
@@ -54,7 +54,7 @@ const Home = ({ user }) => {
         console.error("Error updating high score:", error);
       }
     }
-  };
+  }, [score, highScores, user]);
 
   useEffect(() => {
     // Fetch high scores from the database
