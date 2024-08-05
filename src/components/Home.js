@@ -95,7 +95,7 @@ const Home = ({ user }) => {
       setGameStarted(false);
       setIsModalOpen(false);
     }
-  }, [gameStarted, timer]);
+  }, [gameStarted, timer, handleGameOver, score]);
 
   const handleSelectCategory = async (category) => {
     setSelectedCategory(category);
@@ -110,7 +110,7 @@ const Home = ({ user }) => {
 
       if (response.status === 429) {
         setFetchError("Too many requests. Please wait a moment and try again.");
-        setTimeout(() => setFetchError(null), 4000); // Clear the error after 3 seconds
+        setTimeout(() => setFetchError(null), 3000); // Clear the error after 3 seconds
         return;
       }
 
