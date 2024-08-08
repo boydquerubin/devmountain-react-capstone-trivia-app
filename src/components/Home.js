@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import HighScoreCard from "./HighScoreCard";
 import Categories from "./Categories";
 import QuestionModal from "./QuestionModal";
@@ -57,6 +58,8 @@ const Home = ({ user }) => {
   }, [score, highScores, user]);
 
   useEffect(() => {
+    if (!user) return;
+
     // Fetch high scores from the database
     const fetchHighScores = async () => {
       try {
@@ -71,9 +74,11 @@ const Home = ({ user }) => {
     };
 
     fetchHighScores();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
+    if (!user) return;
+
     // Fetch categories from the external API
     const fetchCategories = async () => {
       try {
@@ -91,7 +96,7 @@ const Home = ({ user }) => {
     };
 
     fetchCategories();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (preGameStarted && preGameTimer > 0) {
@@ -210,46 +215,58 @@ const Home = ({ user }) => {
   return (
     <div className="page home">
       {fetchError && <p>{fetchError}</p>}
-      <div className="score-container">
-        <h2>Your Score: {score}</h2>
-        <h2>
-          {gameStarted
-            ? `Time Remaining: ${timer}s`
-            : preGameStarted
-            ? `Starting in: ${preGameTimer}`
-            : ""}
-        </h2>
-      </div>
-      <div
-        className={`start-button-container ${
-          gameStarted || preGameStarted ? "small" : ""
-        }`}
-      >
-        {!gameStarted && !preGameStarted && (
-          <button onClick={handleStartGame} className="start-game-button">
-            Start Game
-          </button>
-        )}
-      </div>
-      {highScores.length > 0 && (
-        <div className="highScore">
-          <div className="highScore-container">
-            {highScores.map((newHighScore) => (
-              <HighScoreCard key={newHighScore.id} highScore={newHighScore} />
-            ))}
-          </div>
+      {!user ? (
+        <div className="welcome">
+          <h2>Welcome to Rubyx Qube Trivia!</h2>
+          <p>Please login or register to start playing.</p>
         </div>
+      ) : (
+        <>
+          <div className="score-container">
+            <h2>Your Score: {score}</h2>
+            <h2>
+              {gameStarted
+                ? `Time Remaining: ${timer}s`
+                : preGameStarted
+                ? `Starting in: ${preGameTimer}`
+                : ""}
+            </h2>
+          </div>
+          <div
+            className={`start-button-container ${
+              gameStarted || preGameStarted ? "small" : ""
+            }`}
+          >
+            {!gameStarted && !preGameStarted && (
+              <button onClick={handleStartGame} className="start-game-button">
+                Start Game
+              </button>
+            )}
+          </div>
+          {highScores.length > 0 && (
+            <div className="highScore">
+              <div className="highScore-container">
+                {highScores.map((newHighScore) => (
+                  <HighScoreCard
+                    key={newHighScore.id}
+                    highScore={newHighScore}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+          <Categories
+            categories={categories}
+            onSelectCategory={handleSelectCategory}
+          />
+          <QuestionModal
+            question={currentQuestion}
+            isOpen={isModalOpen}
+            onClose={(isCorrect) => handleCloseModal(isCorrect)}
+            onSkip={handleSkip}
+          />
+        </>
       )}
-      <Categories
-        categories={categories}
-        onSelectCategory={handleSelectCategory}
-      />
-      <QuestionModal
-        question={currentQuestion}
-        isOpen={isModalOpen}
-        onClose={(isCorrect) => handleCloseModal(isCorrect)}
-        onSkip={handleSkip}
-      />
     </div>
   );
 };
