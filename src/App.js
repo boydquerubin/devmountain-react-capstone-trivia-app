@@ -62,18 +62,9 @@ function App() {
         </div>
       </nav>
       <Routes>
-        <Route
-          path="/"
-          element={user ? <Home user={user} /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/register"
-          element={user ? <Navigate to="/" /> : <Register />}
-        />
-        <Route
-          path="/login"
-          element={user ? <Navigate to="/" /> : <Login onLogin={setUser} />}
-        />
+        <Route path="/" element={<Home user={user} />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login onLogin={setUser} />} />
       </Routes>
       <Footer />
     </BrowserRouter>
