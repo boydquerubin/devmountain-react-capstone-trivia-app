@@ -11,5 +11,20 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Upgrade-Insecure-Requests",
+          "value": "1"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "block-all-mixed-content"
+        }
+      ]
+    }
   ]
 }
