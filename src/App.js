@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
@@ -62,9 +62,18 @@ function App() {
         </div>
       </nav>
       <Routes>
-        <Route path="/" element={<Home user={user} />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login onLogin={setUser} />} />
+        <Route
+          path="/"
+          element={user ? <Home user={user} /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/register"
+          element={user ? <Navigate to="/" /> : <Register />}
+        />
+        <Route
+          path="/login"
+          element={user ? <Navigate to="/" /> : <Login onLogin={setUser} />}
+        />
       </Routes>
       <Footer />
     </BrowserRouter>

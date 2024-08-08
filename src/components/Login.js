@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom"; // Import useHistory hook
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 import { loginUser } from "../services/authService";
 import "./Login.css"; // Import the CSS file for styling
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,7 +12,7 @@ const Login = ({ onLogin }) => {
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const history = useHistory(); // Initialize useHistory
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -30,7 +30,7 @@ const Login = ({ onLogin }) => {
       if (user) {
         setMessage("Login successful!");
         onLogin(user);
-        history.push("/"); // Redirect to home page
+        navigate("/"); // Redirect to home page
       } else {
         setMessage("Login failed. Please check the console for more details.");
       }
