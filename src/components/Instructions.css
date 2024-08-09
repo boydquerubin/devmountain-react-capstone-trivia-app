@@ -1,0 +1,90 @@
+/* Instructions.css */
+.instructions-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.instructions-modal-content {
+  background: var(--secondary);
+  padding: 25px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  max-width: 450px;
+  width: 100%;
+  color: #fefcfb;
+}
+
+.header-container {
+  background-color: #0a1128; /* Different background color */
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.header-container h2,
+.header-container h3 {
+  margin: 10px;
+  color: #fefcfb;
+}
+
+.instructions-modal-content ul {
+  text-align: left;
+  margin-bottom: 15px;
+  padding-left: 35px;
+  list-style-type: disc;
+}
+
+.instructions-modal-content li {
+  margin-bottom: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+  padding-left: 5px;
+}
+
+.instructions-modal-content p {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: #fefcfb;
+}
+
+.begin-button,
+.close-button {
+  display: inline-block;
+  width: 48%;
+  margin: 10px 1%;
+  padding: 10px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s ease;
+}
+
+.begin-button:hover,
+.close-button:hover {
+  background: #1282a2;
+}
+
+@media (max-width: 600px) {
+  .instructions-modal-content {
+    padding: 20px;
+    max-width: 90%;
+  }
+
+  .begin-button,
+  .close-button {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
