@@ -59,30 +59,64 @@ export const registerUser = async (username, email, password) => {
 
 export const recordHighScore = async (userId, score) => {
   try {
-    // Step 1: Fetch the username associated with the userId
+    // console.log("Attempting to record high score for auth_id:", userId);
+
+    // Step 1: Fetch the username associated with the auth_id
     const { data: user, error: userError } = await supabase
       .from("users")
       .select("username")
-      .eq("id", userId)
-      .single();
+      .eq("auth_id", userId) // Adjusted to search by auth_id instead of id
+      .maybeSingle(); // Use maybeSingle to handle 0 or more rows
 
     if (userError) {
       console.error("Error fetching user:", userError.message);
       return null;
     }
 
+    if (!user) {
+      console.error("No user found with this auth_id:", userId);
+      return null;
+    }
+
     const username = user.username;
 
-    console.log("Recording high score with", { userId, username, score });
+    // console.log("Recording high score with", { userId, username, score });
 
-    // Step 2: Insert the new high score with the username
-    const { error: insertError } = await supabase
-      .from("highScore")
-      .insert([{ userId, username, score }]);
+    // Step 2: Insert or update the high score
+    const { data: existingHighScore, error: fetchHighScoreError } =
+      await supabase
+        .from("highScore")
+        .select("id")
+        .eq("userId", userId) // Check against auth_id, assuming userId is auth_id
+        .single();
 
-    if (insertError) {
-      console.error("Error inserting high score:", insertError.message);
+    if (fetchHighScoreError && fetchHighScoreError.code !== "PGRST001") {
+      console.error(
+        "Error checking existing high score:",
+        fetchHighScoreError.message
+      );
       return null;
+    }
+
+    if (existingHighScore) {
+      const { error: updateError } = await supabase
+        .from("highScore")
+        .update({ score, username })
+        .eq("id", existingHighScore.id);
+
+      if (updateError) {
+        console.error("Error updating high score:", updateError.message);
+        return null;
+      }
+    } else {
+      const { error: insertError } = await supabase
+        .from("highScore")
+        .insert([{ userId, username, score }]); // userId represents auth_id here
+
+      if (insertError) {
+        console.error("Error inserting high score:", insertError.message);
+        return null;
+      }
     }
 
     return { success: true };

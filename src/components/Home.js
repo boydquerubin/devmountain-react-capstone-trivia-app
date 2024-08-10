@@ -36,24 +36,36 @@ const Home = ({ user }) => {
   const [preGameStarted, setPreGameStarted] = useState(false);
 
   const handleGameOver = useCallback(async () => {
-    const currentHighScore = highScores[0];
-    if (score > currentHighScore?.score) {
-      try {
-        const result = await recordHighScore(user.id, score);
-        if (result?.success) {
-          const { data, error: fetchError } = await supabase
-            .from("highScore")
-            .select();
-          if (fetchError) throw fetchError;
-          setHighScores(data);
+    if (user && score > 0) {
+      const result = await recordHighScore(user.id, score);
+      if (result?.success) {
+        console.log("High score recorded successfully");
+        const updatedHighScores = [...highScores];
+        const index = updatedHighScores.findIndex(
+          (highScore) => highScore.userId === user.id
+        );
+
+        if (index !== -1) {
+          // Update the existing high score
+          updatedHighScores[index].score = score;
         } else {
-          console.error("Failed to record high score");
+          // Add the new high score
+          updatedHighScores.push({
+            userId: user.id,
+            username: user.username,
+            score,
+          });
         }
-      } catch (error) {
-        console.error("Error updating high score:", error);
+
+        // Sort the updated high scores by score, descending
+        updatedHighScores.sort((a, b) => b.score - a.score);
+
+        setHighScores(updatedHighScores); // Update the state to trigger a re-render
+      } else {
+        console.error("Failed to record high score");
       }
     }
-  }, [score, highScores, user]);
+  }, [user, score, highScores]);
 
   useEffect(() => {
     const fetchHighScores = async () => {
