@@ -10,7 +10,7 @@
   width: 100%;
   max-width: 300px;
   padding: 20px;
-  background: linear-gradient(145deg, #001f54, #0a1128);
+  background: linear-gradient(145deg, #6b6b6d, #6b6b6d);
   color: #fefcfb;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
@@ -31,7 +31,7 @@
   width: 100%;
   max-width: 300px;
   padding: 20px;
-  background: linear-gradient(145deg, #fefcfb, #1282a2);
+  background: linear-gradient(145deg, #9be6ff, #f77a8b);
   color: #fefcfb;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
@@ -51,12 +51,12 @@
 .high-score-card h3 {
   font-size: 2em;
   margin: 0;
-  color: #001f54;
+  color: #0e0e16;
 }
 
 .high-score-card .score {
   background: #f2f2f2;
-  color: #001f54;
+  color: #0e0e16;
   border-radius: 6px;
   padding: 10px 20px;
   font-size: 1.8em;

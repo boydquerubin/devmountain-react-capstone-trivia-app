@@ -49,19 +49,19 @@
   padding: 10px;
   border: none;
   border-radius: 4px;
-  background-color: #034078;
+  background-color: #0e0e16;
   color: white;
   font-size: 16px;
   cursor: pointer;
 }
 
 .form-container button:disabled {
-  background-color: #007bff88;
+  background-color: #10b0e6;
   cursor: not-allowed;
 }
 
 .form-container .form-message {
   text-align: center;
   margin-top: 10px;
-  color: #1282a2;
+  color: #fa324d;
 }

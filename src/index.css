@@ -2,8 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&family=VT323&display=swap");
 
 :root {
-  --primary: #0a1128;
-  --secondary: #034078;
+  --primary: #fa324d;
+  --secondary: #0e0e16;
 }
 
 h1,
@@ -22,7 +22,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: var(--secondary);
-  color: #0a1128;
+  color: #d81414;
 }
 
 code {
@@ -91,7 +91,7 @@ nav {
 }
 
 .auth-buttons a:hover {
-  background: #1282a2;
+  background: #10b0e6;
 }
 
 .page {

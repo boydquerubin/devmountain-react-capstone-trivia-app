@@ -42,7 +42,7 @@
 
 .logout-button {
   padding: 10px 20px;
-  background-color: #034078; /* Button background color */
+  background-color: #0e0e16; /* Button background color */
   color: white; /* Text color */
   border: none; /* Remove border */
   border-radius: 4px; /* Rounded corners */
@@ -52,7 +52,7 @@
 }
 
 .logout-button:hover {
-  background-color: #1282a2; /* Background color on hover */
+  background-color: #d81414; /* Background color on hover */
   transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 
@@ -91,7 +91,7 @@
 
 .start-game-button {
   padding: 15px 20px;
-  background-color: #0a1128;
+  background-color: #d81414;
   color: white;
   border: none;
   border-radius: 10px;
@@ -101,7 +101,7 @@
 }
 
 .start-game-button:hover {
-  background-color: #1282a2;
+  background-color: #10b0e6;
   transform: scale(1.05);
 }
 

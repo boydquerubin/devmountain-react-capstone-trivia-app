@@ -48,7 +48,6 @@ function App() {
         <div className="auth-buttons">
           {user ? (
             <>
-              <span>Welcome, {user.email}</span>
               <button onClick={handleLogout} className="logout-button">
                 Logout
               </button>

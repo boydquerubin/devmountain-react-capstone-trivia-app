@@ -24,7 +24,7 @@
 }
 
 .header-container {
-  background-color: #0a1128; /* Different background color */
+  background-color: #10b0e6; /* Different background color */
   padding: 10px;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -33,7 +33,7 @@
 .header-container h2,
 .header-container h3 {
   margin: 10px;
-  color: #fefcfb;
+  color: #0e0e16;
 }
 
 .instructions-modal-content ul {
@@ -73,7 +73,7 @@
 
 .begin-button:hover,
 .close-button:hover {
-  background: #1282a2;
+  background: #10b0e6;
 }
 
 @media (max-width: 600px) {
