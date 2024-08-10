@@ -2,15 +2,14 @@ import { supabase } from "../supabaseClient";
 
 export const storeScore = async (userId, score) => {
   try {
-    // Check if the user already has a score
+    // Check if the user already has a score entry
     const { data: existingScore, error: fetchError } = await supabase
       .from("scores")
       .select("id")
       .eq("user_id", userId)
-      .single();
+      .maybeSingle(); // Safe query for 0 or 1 result
 
-    if (fetchError && fetchError.code !== "PGRST001") {
-      // Handle any error that isn't "no rows found"
+    if (fetchError) {
       console.error("Error checking existing score:", fetchError.message);
       return;
     }

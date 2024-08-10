@@ -40,43 +40,35 @@ const Home = ({ user }) => {
       const result = await recordHighScore(user.id, score);
       if (result?.success) {
         console.log("High score recorded successfully");
-        const updatedHighScores = [...highScores];
-        const index = updatedHighScores.findIndex(
-          (highScore) => highScore.userId === user.id
-        );
+        // Re-fetch the high scores to update the state
+        const { data: updatedHighScores, error } = await supabase
+          .from("highScore")
+          .select("*")
+          .order("score", { ascending: false });
 
-        if (index !== -1) {
-          // Update the existing high score
-          updatedHighScores[index].score = score;
+        if (error) {
+          console.error("Error fetching updated high scores:", error.message);
         } else {
-          // Add the new high score
-          updatedHighScores.push({
-            userId: user.id,
-            username: user.username,
-            score,
-          });
+          setHighScores(updatedHighScores); // Update the state with the new high scores
         }
-
-        // Sort the updated high scores by score, descending
-        updatedHighScores.sort((a, b) => b.score - a.score);
-
-        setHighScores(updatedHighScores); // Update the state to trigger a re-render
       } else {
         console.error("Failed to record high score");
       }
     }
-  }, [user, score, highScores]);
+  }, [user, score]);
 
+  // Fetch high scores on component mount
   useEffect(() => {
     const fetchHighScores = async () => {
-      try {
-        const { data, error } = await supabase.from("highScore").select();
-        if (error) throw error;
+      const { data, error } = await supabase
+        .from("highScore")
+        .select("*")
+        .order("score", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching high scores:", error.message);
+      } else {
         setHighScores(data);
-      } catch (error) {
-        setFetchError("Could not fetch the high scores");
-        setHighScores([]);
-        console.error(error);
       }
     };
 
