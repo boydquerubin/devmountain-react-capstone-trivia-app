@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { registerUser } from "../services/authService";
-import "./Register.css"; // Import the CSS file for styling
+import "./Register.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Register = () => {
+  const [username, setUsername] = useState(""); // Add state for username
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -16,7 +17,8 @@ const Register = () => {
     setLoading(true);
     setMessage("");
 
-    if (!email || !password) {
+    if (!username || !email || !password) {
+      // Include username in validation
       setMessage("Please fill in all fields.");
       setLoading(false);
       return;
@@ -35,7 +37,7 @@ const Register = () => {
     }
 
     try {
-      const user = await registerUser(email, password);
+      const user = await registerUser(username, email, password); // Pass username
       if (user) {
         setMessage(
           "Registration pending! Please check your email to confirm your address and finalize your registration."
@@ -61,6 +63,12 @@ const Register = () => {
     <div className="form-container">
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
+        <input
+          type="text"
+          placeholder="Username" // Add input field for username
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
         <input
           type="email"
           placeholder="Email"

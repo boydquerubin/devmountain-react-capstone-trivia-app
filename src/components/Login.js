@@ -1,36 +1,36 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook
-import { loginUser } from "../services/authService";
-import "./Login.css"; // Import the CSS file for styling
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../services/authService"; // Import loginUser
+import "./Login.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Login = ({ onLogin }) => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
-    if (!email || !password) {
+    if (!username || !password) {
       setMessage("Please fill in all fields.");
       setLoading(false);
       return;
     }
 
     try {
-      const user = await loginUser(email, password);
+      const user = await loginUser(username, password); // Use loginUser
       if (user) {
         setMessage("Login successful!");
         onLogin(user);
-        navigate("/"); // Redirect to home page
+        navigate("/");
       } else {
         setMessage("Login failed. Please check the console for more details.");
       }
@@ -51,10 +51,10 @@ const Login = ({ onLogin }) => {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
         <div className="password-container">
           <input

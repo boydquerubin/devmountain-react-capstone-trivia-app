@@ -1,7 +1,8 @@
 import { supabase } from "../supabaseClient";
 
-export const registerUser = async (email, password) => {
+export const registerUser = async (username, email, password) => {
   try {
+    // Step 1: Sign up the user with Supabase auth
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -12,11 +13,34 @@ export const registerUser = async (email, password) => {
       return null;
     }
 
-    // Insert into custom users table
-    const { user } = data;
+    const user = data.user;
+
+    if (!user) {
+      console.error("User creation failed, no user returned.");
+      return null;
+    }
+
+    // Step 2: Check if the user already exists in the custom users table
+    const { data: existingUser, error: checkError } = await supabase
+      .from("users")
+      .select("*")
+      .eq("auth_id", user.id)
+      .maybeSingle(); // Adjusted to handle cases where no rows or multiple rows are returned
+
+    if (checkError && checkError.code !== "PGRST001") {
+      console.error("Error checking existing user:", checkError.message);
+      return null;
+    }
+
+    if (existingUser) {
+      console.log("User already exists in custom table.");
+      return user;
+    }
+
+    // Step 3: Insert new user data into the custom users table
     const { error: insertError } = await supabase
       .from("users")
-      .insert([{ auth_id: user.id, email }]);
+      .insert([{ auth_id: user.id, username, email }]);
 
     if (insertError) {
       console.error(
@@ -33,17 +57,31 @@ export const registerUser = async (email, password) => {
   }
 };
 
-export const loginUser = async (email, password) => {
+export const loginUser = async (username, password) => {
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
+    // First, fetch the user based on the username
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("auth_id, email")
+      .eq("username", username)
+      .maybeSingle(); // This will return null if no rows or more than one row
+
+    if (error || !user) {
+      console.error("Error fetching user by username:", error?.message);
+      return null;
+    }
+
+    // Use the retrieved auth_id to log the user in
+    const { data, error: loginError } = await supabase.auth.signInWithPassword({
+      email: user.email,
       password,
     });
 
-    if (error) {
-      console.error("Error logging in user:", error.message);
+    if (loginError) {
+      console.error("Error logging in user:", loginError.message);
       return null;
     }
+
     return data.user;
   } catch (error) {
     console.error("Unexpected error during login:", error);

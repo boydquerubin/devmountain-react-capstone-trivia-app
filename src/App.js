@@ -3,11 +3,11 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Home from "./components/Home";
 import Register from "./components/Register";
 import Login from "./components/Login";
-import { supabase } from "./supabaseClient"; // Import supabase client
-import { logoutUser } from "./services/authService"; // Import logout function
-import logo from "./assets/logo.png"; // Import the logo
-import Footer from "./components/Footer"; // Import the Footer component
-import "./App.css"; // Import the CSS file for styling
+import { supabase } from "./supabaseClient";
+import { logoutUser } from "./services/authService"; // Import logoutUser
+import logo from "./assets/logo.png";
+import Footer from "./components/Footer";
+import "./App.css";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -26,7 +26,7 @@ function App() {
   }, []);
 
   const handleLogout = async () => {
-    await logoutUser();
+    await logoutUser(); // Use logoutUser
     setUser(null);
   };
 
