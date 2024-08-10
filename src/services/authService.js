@@ -73,6 +73,8 @@ export const recordHighScore = async (userId, score) => {
 
     const username = user.username;
 
+    console.log("Recording high score with", { userId, username, score });
+
     // Step 2: Insert the new high score with the username
     const { error: insertError } = await supabase
       .from("highScore")
