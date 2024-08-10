@@ -57,6 +57,59 @@ export const registerUser = async (username, email, password) => {
   }
 };
 
+export const recordHighScore = async (userId, score) => {
+  try {
+    // Step 1: Fetch the username associated with the userId
+    const { data: user, error: userError } = await supabase
+      .from("users")
+      .select("username")
+      .eq("id", userId)
+      .single();
+
+    if (userError) {
+      console.error("Error fetching user:", userError.message);
+      return null;
+    }
+
+    const username = user.username;
+
+    // Step 2: Insert the new high score with the username
+    const { error: insertError } = await supabase
+      .from("highScore")
+      .insert([{ userId, username, score }]);
+
+    if (insertError) {
+      console.error("Error inserting high score:", insertError.message);
+      return null;
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Unexpected error during high score recording:", error);
+    return null;
+  }
+};
+
+// Function to fetch high scores to display them
+export const fetchHighScores = async () => {
+  try {
+    const { data: highScores, error } = await supabase
+      .from("highScore")
+      .select("username, score")
+      .order("score", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching high scores:", error.message);
+      return [];
+    }
+
+    return highScores;
+  } catch (error) {
+    console.error("Unexpected error fetching high scores:", error);
+    return [];
+  }
+};
+
 export const loginUser = async (username, password) => {
   try {
     // First, fetch the user based on the username

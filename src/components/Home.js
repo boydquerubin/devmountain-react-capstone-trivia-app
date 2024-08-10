@@ -5,6 +5,7 @@ import QuestionModal from "./QuestionModal";
 import Instructions from "./Instructions"; // Import the Instructions component
 import { supabase } from "../supabaseClient";
 import { storeScore } from "../services/scoreService";
+import { recordHighScore } from "../services/authService"; // Import the recordHighScore function
 import he from "he";
 import "../index.css";
 
@@ -38,19 +39,15 @@ const Home = ({ user }) => {
     const currentHighScore = highScores[0];
     if (score > currentHighScore?.score) {
       try {
-        const { error } = await supabase
-          .from("highScore")
-          .update({ score, userId: user.id, username: user.email })
-          .eq("id", currentHighScore.id);
-
-        if (error) {
-          throw error;
-        } else {
+        const result = await recordHighScore(user.id, score);
+        if (result?.success) {
           const { data, error: fetchError } = await supabase
             .from("highScore")
             .select();
           if (fetchError) throw fetchError;
           setHighScores(data);
+        } else {
+          console.error("Failed to record high score");
         }
       } catch (error) {
         console.error("Error updating high score:", error);
