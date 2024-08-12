@@ -8,6 +8,7 @@ import { logoutUser } from "./services/authService"; // Import logoutUser
 import logo from "./assets/logo.png";
 import Footer from "./components/Footer";
 import "./App.css";
+import "./index.css";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -32,40 +33,47 @@ function App() {
 
   return (
     <BrowserRouter>
-      <nav>
-        <div className="nav-links">
-          <Link to="/" className="navbar-brand mb-0 h1">
-            <img
-              src={logo}
-              width="60"
-              height="60"
-              alt="Rubyx Qube Logo"
-              className="logo"
-            />
-            <h1>Rubyx Qube</h1>
-          </Link>
+      <div className="page-container">
+        <nav>
+          <div className="nav-links">
+            <Link to="/" className="navbar-brand mb-0 h1">
+              <img
+                src={logo}
+                width="60"
+                height="60"
+                alt="Rubyx Qube Logo"
+                className="logo"
+              />
+              <h1>Rubyx Qube</h1>
+            </Link>
+          </div>
+          <div className="auth-buttons">
+            {user ? (
+              <>
+                <button onClick={handleLogout} className="logout-button">
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/register">Register</Link>
+                <Link to="/login">Login</Link>
+              </>
+            )}
+          </div>
+        </nav>
+
+        {/* Main content wrapper */}
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<Home user={user} />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login onLogin={setUser} />} />
+          </Routes>
         </div>
-        <div className="auth-buttons">
-          {user ? (
-            <>
-              <button onClick={handleLogout} className="logout-button">
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/register">Register</Link>
-              <Link to="/login">Login</Link>
-            </>
-          )}
-        </div>
-      </nav>
-      <Routes>
-        <Route path="/" element={<Home user={user} />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login onLogin={setUser} />} />
-      </Routes>
-      <Footer />
+
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }

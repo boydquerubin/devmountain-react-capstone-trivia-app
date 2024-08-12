@@ -14,7 +14,9 @@ p {
   text-align: center;
 }
 
+html,
 body {
+  height: 100%;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -23,6 +25,32 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: var(--secondary);
   color: #d81414;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Wrapper container for the entire page */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Full height of the viewport */
+}
+
+/* Flex-grow the main content to push the footer down */
+.main-content {
+  flex-grow: 1;
+}
+
+/* Footer styles */
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #10b0e6;
+  color: #0e0e16;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 code {
@@ -84,7 +112,7 @@ nav {
 .auth-buttons a {
   color: #fefcfb;
   text-decoration: none;
-  padding: 5px 10px;
+  padding: 10px 20px;
   background: var(--secondary);
   border-radius: 4px;
   transition: background 0.2s;

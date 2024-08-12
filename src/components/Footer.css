@@ -1,17 +1,4 @@
 /* Footer.css */
-.footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: static;
-  padding: 10px 20px;
-  background-color: #10b0e6;
-  color: #0e0e16;
-  bottom: 0;
-  width: 100%;
-  box-sizing: border-box;
-}
-
 .footer-content {
   display: flex;
   align-items: center;
