@@ -52,7 +52,7 @@
 }
 
 .logout-button:hover {
-  background-color: #d81414; /* Background color on hover */
+  background-color: #00c8ff; /* Background color on hover */
   transform: scale(1.05); /* Slightly enlarge the button on hover */
 }
 

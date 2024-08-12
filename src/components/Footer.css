@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
+  position: static;
   padding: 10px 20px;
   background-color: #10b0e6;
   color: #0e0e16;
