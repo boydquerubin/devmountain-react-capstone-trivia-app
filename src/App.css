@@ -14,10 +14,12 @@
 }
 
 .nav-links a {
+  padding: 10px 20px;
   color: white;
   text-decoration: none;
   margin-right: 15px;
   font-size: 18px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .nav-links a:hover {
@@ -47,7 +49,8 @@
   border: none; /* Remove border */
   border-radius: 4px; /* Rounded corners */
   cursor: pointer; /* Pointer cursor on hover */
-  font-size: 16px; /* Font size */
+  margin-right: 15px;
+  font-size: 18px; /* Font size */
   transition: background-color 0.3s, transform 0.3s; /* Smooth transition for background color and transform */
 }
 
