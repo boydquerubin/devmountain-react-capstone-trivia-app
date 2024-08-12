@@ -18,7 +18,7 @@
   color: white;
   text-decoration: none;
   margin-right: 15px;
-  font-size: 18px;
+  font-size: 16px;
   transition: background-color 0.3s, transform 0.3s;
 }
 
@@ -35,7 +35,7 @@
   color: white;
   text-decoration: none;
   margin-right: 15px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .auth-buttons a:hover {
@@ -50,7 +50,7 @@
   border-radius: 4px; /* Rounded corners */
   cursor: pointer; /* Pointer cursor on hover */
   margin-right: 15px;
-  font-size: 18px; /* Font size */
+  font-size: 16px; /* Font size */
   transition: background-color 0.3s, transform 0.3s; /* Smooth transition for background color and transform */
 }
 
