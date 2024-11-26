@@ -1,42 +1,69 @@
-import { supabase } from "../supabaseClient";
+const pool = require("../config/db");
 
 export const storeScore = async (userId, score) => {
   try {
-    // Check if the user already has a score entry
-    const { data: existingScore, error: fetchError } = await supabase
-      .from("scores")
-      .select("id")
-      .eq("user_id", userId)
-      .maybeSingle(); // Safe query for 0 or 1 result
+    // Check if user already has a score
+    const [existingScores] = await pool.query(
+      "SELECT id, score FROM scores WHERE user_id = ?",
+      [userId]
+    );
 
-    if (fetchError) {
-      console.error("Error checking existing score:", fetchError.message);
-      return;
-    }
-
-    if (existingScore) {
-      // If the user already has a score, update it
-      const { error: updateError } = await supabase
-        .from("scores")
-        .update({ score })
-        .eq("id", existingScore.id);
-
-      if (updateError) {
-        console.error("Error updating score:", updateError.message);
-        return;
+    if (existingScores.length > 0) {
+      // Only update if the new score is different
+      if (existingScores[0].score !== score) {
+        await pool.query("UPDATE scores SET score = ? WHERE id = ?", [
+          score,
+          existingScores[0].id,
+        ]);
       }
     } else {
-      // If no existing score, insert a new one
-      const { error: insertError } = await supabase
-        .from("scores")
-        .insert([{ user_id: userId, score }]);
-
-      if (insertError) {
-        console.error("Error inserting score:", insertError.message);
-        return;
-      }
+      // Insert new score
+      await pool.query("INSERT INTO scores (user_id, score) VALUES (?, ?)", [
+        userId,
+        score,
+      ]);
     }
   } catch (error) {
-    console.error("Unexpected error storing score:", error);
+    console.error("Error storing score:", error.message);
+  }
+};
+
+export const recordHighScore = async (userId, score) => {
+  try {
+    // Fetch the current high score for the user
+    const [existingScores] = await pool.query(
+      "SELECT score FROM highScore WHERE user_id = ?",
+      [userId]
+    );
+
+    if (existingScores.length > 0) {
+      // Only update if the new score is higher
+      if (score > existingScores[0].score) {
+        await pool.query("UPDATE highScore SET score = ? WHERE user_id = ?", [
+          score,
+          userId,
+        ]);
+      }
+    } else {
+      // Insert a new high score record
+      await pool.query("INSERT INTO highScore (user_id, score) VALUES (?, ?)", [
+        userId,
+        score,
+      ]);
+    }
+  } catch (error) {
+    console.error("Error recording high score:", error.message);
+  }
+};
+
+export const fetchHighScores = async () => {
+  try {
+    const [highScores] = await pool.query(
+      "SELECT u.username, hs.score FROM highScore hs JOIN users u ON hs.user_id = u.id ORDER BY hs.score DESC LIMIT 10"
+    );
+    return highScores;
+  } catch (error) {
+    console.error("Error fetching high scores:", error.message);
+    return [];
   }
 };
